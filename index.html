@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Little Explorers - Kids Learning World</title>
+  
+  <!-- Added jQuery Library CDN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #F8FAFC; 
+      color: #334155; 
+      line-height: 1.6;
+    }
+    header {
+      background-color: #1E3A8A; 
+      color: white;
+      text-align: center;
+      padding: 25px 15px;
+      border-bottom: 4px solid #F59E0B; 
+      position: relative; /* Added for absolute positioning of points badge */
+    }
+    
+    /* New Styles for Points Badge */
+    #scoreBadge {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      background-color: #F59E0B;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    nav {
+      background-color: #0F172A; 
+    }
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+    nav li a {
+      display: block;
+      color: #F1F5F9;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 14px 22px;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+    nav li a:hover {
+      background-color: #2563EB; 
+      border-radius: 6px;
+    }
+    .hero {
+      background-color: #EFF6FF; 
+      text-align: center;
+      padding: 35px 20px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+    .hero h2 {
+      font-size: 26px;
+      color: #1E40AF;
+    }
+    .container {
+      display: flex;
+      gap: 20px;
+      padding: 25px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .sidebar {
+      flex: 1; 
+      background-color: #FFFFFF;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .sidebar h3 {
+      color: #1E3A8A;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #E2E8F0;
+    }
+    .sidebar ul {
+      list-style: none;
+    }
+    .sidebar li {
+      padding: 10px 0;
+      border-bottom: 1px solid #F1F5F9;
+      font-weight: 500;
+      font-size: 15px;
+      color: #475569;
+      cursor: pointer; /* Added cursor for interactive feel */
+    }
+    .content {
+      flex: 3; 
+    }
+    .content h2 {
+      color: #0F172A;
+      margin-bottom: 10px;
+    }
+    .cards {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .card {
+      flex: 1;
+      background-color: #FFFFFF;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .card h3 {
+      color: #1E293B;
+      margin: 12px 0 6px;
+    }
+    .card p {
+      font-size: 14px;
+      color: #64748B;
+    }
+    .card button {
+      margin-top: 12px;
+      padding: 10px 20px;
+      background-color: #2563EB; 
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .card button:hover {
+      background-color: #1D4ED8;
+    }
+    
+    /* Styles for New Math Widget */
+    .math-widget {
+      margin-top: 25px;
+      background-color: #FFFFFF;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+    .math-widget input {
+      padding: 8px;
+      width: 100px;
+      margin: 10px;
+      border: 1px solid #CBD5E1;
+      border-radius: 5px;
+    }
+    .math-widget button {
+      padding: 9px 18px;
+      background-color: #10B981;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .math-widget button:hover {
+      background-color: #059669;
+    }
+
+    footer {
+      background-color: #0F172A;
+      color: #94A3B8;
+      text-align: center;
+      padding: 20px;
+      margin-top: 30px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 992px) {
+      .container { flex-direction: column; }
+      .cards { flex-wrap: wrap; }
+      .card { flex: 1 1 45%; }
+    }
+    @media (max-width: 768px) {
+      nav ul { flex-direction: column; text-align: center; }
+      .cards { flex-direction: column; }
+      .card { width: 100%; }
+      .card button { width: 100%; }
+      #scoreBadge { position: static; display: inline-block; margin-top: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Little Explorers Academy</h1>
+    <p>Interactive & Structured Learning for Kids</p>
+    <!-- Live Points Badge Element -->
+    <div id="scoreBadge">Points: <span id="points">0</span> 🌟</div>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Curriculum</a></li>
+      <li><a href="#">Art & Crafts</a></li>
+      <li><a href="#">Interactive Games</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h2>Welcome Young Adventurers! 🌟</h2>
+    <p>Explore high-quality learning paths designed to build essential skills.</p>
+  </section>
+
+  <div class="container">
+    <aside class="sidebar">
+      <h3>Quick Subjects</h3>
+      <ul>
+        <li>🔢 Mathematics</li>
+        <li>📖 Phonics & Reading</li>
+        <li>🧪 Science Discovery</li>
+        <li>🎨 Art & Design</li>
+        <li>🎵 Music & Rhymes</li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <h2>Featured Activities</h2>
+      <div class="cards">
+        <div class="card">
+          <img src="cartoon-kids-reading-books.webp" alt="Reading Books">
+          <h3>Alphabet & Reading</h3>
+          <p>Develop reading comprehension through guided story sessions.</p>
+          <button class="activity-btn">Start Reading</button>
+        </div>
+        <div class="card">
+          <img src="math.jpg" alt="Math Blocks">
+          <h3>Counting & Math</h3>
+          <p>Master basic arithmetic using interactive visual exercises.</p>
+          <button class="activity-btn">Play Numbers</button>
+        </div>
+        <div class="card">
+          <img src="images.jpg" alt="Painting and Craft">
+          <h3>Creative Arts</h3>
+          <p>Express artistic skills with digital painting and crafts.</p>
+          <button class="activity-btn">Start Painting</button>
+        </div>
+      </div>
+
+      <!-- New Ex 7 Compliant jQuery Widget -->
+      <div class="math-widget">
+        <h3 style="color: #1E3A8A;">Quick Math Challenge 🧠</h3>
+        <p style="margin-top:10px; font-size: 18px;">
+          What is <strong id="num1">5</strong> + <strong id="num2">4</strong>?
+        </p>
+        <input type="number" id="math-answer" placeholder="Type here">
+        <button id="btn-check">Check Answer</button>
+        <p id="math-feedback" style="margin-top: 10px; font-weight: bold;"></p>
+      </div>
+
+    </main>
+  </div>
+
+  <footer>
+    <p>© 2026 Little Explorers Learning Hub | Web Design Laboratory</p>
+  </footer>
+
+  <!-- jQuery Logic Block -->
+  <script>
+    $(document).ready(function(){
+      
+      // 1. Points System: Modifying DOM text based on button clicks
+      let currentPoints = 0;
+      
+      $('.activity-btn').click(function(){
+        currentPoints += 10; 
+        $('#points').text(currentPoints); // Update text
+        
+        // Temporarily change badge color to green to indicate success
+        $('#scoreBadge').css('background-color', '#10B981');
+        setTimeout(function(){
+          $('#scoreBadge').css('background-color', '#F59E0B');
+        }, 400);
+      });
+
+      // 2. Sidebar Hover Animations: Using .hover() and .css()
+      $('.sidebar li').hover(
+        function() {
+          // Mouse enter
+          $(this).css({
+            'color': '#2563EB',
+            'font-weight': 'bold',
+            'padding-left': '8px',
+            'transition': 'all 0.2s ease'
+          });
+        },
+        function() {
+          // Mouse leave
+          $(this).css({
+            'color': '#475569',
+            'font-weight': '500',
+            'padding-left': '0px'
+          });
+        }
+      );
+
+      // 3. Calculation Widget: Similar to Ex 7 Budget/Cake Calculation
+      $('#btn-check').click(function(){
+        // Fetch generated numbers from span texts
+        let n1 = parseInt($('#num1').text());
+        let n2 = parseInt($('#num2').text());
+        let expected = n1 + n2;
+        
+        // Fetch user input using .val()
+        let userAns = parseInt($('#math-answer').val());
+
+        // Validate and provide visual feedback using .css() and .text()
+        if (isNaN(userAns)) {
+            $('#math-feedback').text("Please enter a number!").css('color', 'orange');
+        } else if (userAns === expected) {
+            $('#math-feedback').text("Correct! 🎉 +5 Points!").css('color', 'green');
+            
+            // Add points to main header
+            currentPoints += 5;
+            $('#points').text(currentPoints);
+            
+            // Generate new question dynamically
+            $('#num1').text(Math.floor(Math.random() * 10) + 1);
+            $('#num2').text(Math.floor(Math.random() * 10) + 1);
+            $('#math-answer').val(''); // Clear input
+        } else {
+            $('#math-feedback').text("Oops! Try again. 🤔").css('color', 'red');
+        }
+      });
+
+    });
+  </script>
+</body>
+</html>
